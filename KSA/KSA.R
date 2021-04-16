@@ -12,7 +12,7 @@ rm(list = ls(all.names = TRUE))
 suppressPackageStartupMessages(library('Matrix')) # sparseMatrix()
 
 # source
-source('Functions.R')
+source('./Functions.R')
 
 # reproducibility
 set.seed(6)
@@ -29,20 +29,20 @@ kappa2 <- 40/L # reaction parameter 2
 
 # liberal system: ELASPED TIME = 40.75 sec
 # totalitarian system: ELASPED TIME = 38.64 sec
-liberal <- T
+liberal <- F
 
 if(liberal){
   a1 <- 0/L
   a2 <- 0.5/L
   a3 <- 0.5/L
   
-  file_name_probabilities_obj <- 'KSA_probabilities_liberal.RData'
+  file_name_probabilities_obj <- 'KSA/KSA_probabilities_liberal.RData'
 }else{
   a1 <- 1.5/L
   a2 <- 1/L
   a3 <- -0.25/L
   
-  file_name_probabilities_obj <- 'KSA_probabilities_totalitarian.RData' 
+  file_name_probabilities_obj <- 'KSA/KSA_probabilities_totalitarian.RData' 
 }
 
 total_time <- 15 # simulation time in days
@@ -174,11 +174,14 @@ Y2_mean <- rowSums(sapply(1:length(bins), function(i) bins[i]*Y2_probabilities[i
 Y1_std <- sqrt(rowSums(sapply(1:length(bins), function(i) ((bins[i]-Y1_mean)^2)*Y1_probabilities[i,])))
 Y2_std <- sqrt(rowSums(sapply(1:length(bins), function(i) ((bins[i]-Y1_mean)^2)*Y2_probabilities[i,])))
 
+# create folder 'results' that will contain the resulting plots
+dir.create('KSA/results', showWarnings = F) # if already exists it only gives a warning (which we surpress)
+
 # save a png file with the results if the file does not exist already
 if(liberal){
-  png_file_name <- 'KSA_liberal.png'
+  png_file_name <- 'KSA/results/KSA_liberal.png'
 }else{
-  png_file_name <- 'KSA_totalitarian.png'
+  png_file_name <- 'KSA/results/KSA_totalitarian.png'
 }
 
 file_needs_closing <- F
@@ -254,3 +257,6 @@ if(!file.exists(gif_file_name)){
     interval = 0.1, ani.width = 800, ani.height = 550
   ) 
 }
+# move file to results folder 
+# (required work around, because gif cannot be exported straight to results folder)
+file.rename(from = gif_file_name, to = paste0('KSA/results/',gif_file_name))

@@ -29,20 +29,20 @@ kappa2 <- 40/L # reaction parameter 2
 
 # liberal system: ELASPED TIME = 38.44 sec
 # totalitarian system: ELASPED TIME = 34.56 sec
-liberal <- F
+liberal <- T
 
 if(liberal){
   a1 <- 0/L
   a2 <- 0.5/L
   a3 <- 0.5/L
   
-  file_name_Yt_obj <- 'MCG_Yt_liberal.RData'
+  file_name_Yt_obj <- 'MCGillespie/MCG_Yt_liberal.RData'
 }else{
   a1 <- 1.5/L
   a2 <- 1/L
   a3 <- -0.25/L
   
-  file_name_Yt_obj <- 'MCG_Yt_totalitarian.RData'
+  file_name_Yt_obj <- 'MCGillespie/MCG_Yt_totalitarian.RData'
 }
 
 total_time <- 15 # simulation time in days
@@ -133,10 +133,13 @@ counts <- sapply(1:ncol(vals), function(j) sapply(bins, function(i) sum(vals[,j]
 expected_mean <- apply(Yt_data, c(2,3), mean)
 expected_std <- apply(Yt_data, c(2,3), std)
 
+# create folder 'results' that will contain the resulting plots
+dir.create('MCGillespie/results', showWarnings = F) # if already exists it only gives a warning (which we surpress)
+
 if(liberal){
-  png_file_name <- 'Gillespie_liberal.png'
+  png_file_name <- 'McGillespie/results/MCGillespie_liberal.png'
 }else{
-  png_file_name <- 'Gillespie_totalitarian.png'
+  png_file_name <- 'McGillespie/results/MCGillespie_totalitarian.png'
 }
 
 file_needs_closing <- F
