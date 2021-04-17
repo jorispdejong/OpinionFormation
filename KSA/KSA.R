@@ -29,7 +29,7 @@ kappa2 <- 40/L # reaction parameter 2
 
 # liberal system: ELASPED TIME = 40.75 sec
 # totalitarian system: ELASPED TIME = 38.64 sec
-liberal <- F
+liberal <- T
 
 if(liberal){
   a1 <- 0/L
@@ -228,7 +228,7 @@ if(liberal){
 }else{
   gif_file_name <- 'KSA_totalitarian.gif'
 }
-if(!file.exists(gif_file_name)){
+if(!file.exists(paste0('KSA/results/',gif_file_name))){
   # Create 3d animation
   suppressPackageStartupMessages(library('animation')) # make animation of plots
   suppressPackageStartupMessages(library('plot3D')) # 3d surface plot
@@ -242,7 +242,7 @@ if(!file.exists(gif_file_name)){
         persp3D(bins, bins, probabilities[,,i], 
                 theta = 20, phi = 25, expand = 0.4, ticktype = 'detailed', 
                 cex.lab=1.2, nticks = 4,
-                xlab = 'net private opinion', ylab = 'net public opinion', zlab = 'probability', 
+                xlab = 'net public opinion', ylab = 'net private opinion', zlab = 'probability', 
                 main = paste0('Krylov subspace approximation - ', 
                               ifelse(liberal,'Liberal ', 'Totalitarian '), 'System', 
                               ', t = ',
